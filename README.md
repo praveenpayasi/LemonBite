@@ -1,140 +1,49 @@
-# LemonLite
+# LemonBite
 
-A React Native restaurant application built with Expo and TypeScript.
+LemonBite is a React Native mobile application developed as part of the React Native Capstone project.
 
-> **Status: Phase 1 — Foundation.** This repository currently contains the
-> project scaffolding, design system, reusable components, navigation shell and
-> testing setup. The actual product screens (Welcome, Sign Up, Preferences,
-> Home/Menu, Profile) are **not** implemented yet — they are planned for later
-> phases.
+The application implements onboarding, profile management, menu browsing, search and filtering, persistent user data, and mobile navigation.
 
-## Project overview
+## Wireframe
 
-LemonLite is a portfolio project that grows the "Little Lemon" restaurant app
-into a clean, scalable, multi-screen mobile application. Phase 1 focuses on a
-professional, testable foundation rather than UI completeness: a centralized
-design system, strongly-typed reusable components, file-based navigation and a
-working test harness.
+The Home screen was designed using a low-fidelity wireframe before implementation.
 
-## Technology stack
+![LemonBite Home Wireframe](docs/wireframes/lemonbite-home-wireframe.jpg)
 
-| Concern        | Choice                                                      |
-| -------------- | ---------------------------------------------------------- |
-| Framework      | React Native (Expo SDK 57)                                 |
-| Language       | TypeScript (strict)                                        |
-| Navigation     | Expo Router (file-based)                                   |
-| Fonts          | `@expo-google-fonts` (Markazi Text + Karla) via `expo-font` |
-| Safe areas     | `react-native-safe-area-context`                           |
-| Native screens | `react-native-screens`                                     |
-| Testing        | Jest (`jest-expo` preset) + React Native Testing Library   |
-| Linting        | ESLint (`eslint-config-expo`, flat config)                 |
-| Formatting     | Prettier                                                   |
+## Application Screens
 
-Only dependencies with a clear present-day need are installed. State management,
-networking, storage and form libraries are intentionally omitted until a real
-requirement appears.
+### Welcome
+![Welcome Screen](docs/screenshots/welcome.png)
 
-## Architecture
+### Sign Up
+![Sign Up Screen](docs/screenshots/signup.png)
 
-- **File-based routing** via Expo Router. The router root is `src/app`; every
-  file there becomes a route. A single root `Stack` in `_layout.tsx` provides the
-  base navigator that future nested route groups plug into.
-- **Design tokens are centralized.** Colors, typography, spacing and dimensions
-  live in `src/constants` and are re-exported through a single `theme` object.
-  Components consume `theme.colors.primary`, never raw hex literals.
-- **Presentational components.** Reusable UI in `src/components` is strongly
-  typed, side-effect free, and holds no business or navigation logic.
-- **Path aliases.** `@/*` maps to `src/*` (TypeScript `paths` + Expo Router's
-  `tsconfigPaths` experiment) so imports stay flat and refactor-safe.
+### Preferences
+![Preferences Screen](docs/screenshots/preferences.png)
 
-## Folder structure
+### Home
+![Home Screen](docs/screenshots/home.png)
 
-```
-src/
-├── app/                  # Expo Router routes (file-based navigation)
-│   ├── _layout.tsx       # Root layout: providers, font loading, root Stack
-│   └── index.tsx         # Phase 1 placeholder landing route
-├── components/
-│   ├── common/           # Cross-cutting UI (PrimaryButton, ScreenContainer, logo)
-│   ├── forms/            # Form controls (TextInputField)
-│   └── navigation/       # App chrome (AppHeader)
-├── constants/            # Design tokens + route definitions
-│   ├── colors.ts
-│   ├── typography.ts
-│   ├── spacing.ts
-│   ├── dimensions.ts
-│   └── routes.ts
-├── theme/                # Single aggregated `theme` export of all tokens
-├── hooks/                # Reusable hooks (useAppFonts)
-├── types/                # Shared TypeScript types
-└── __tests__/            # Unit tests
-```
+### Profile
+![Profile Screen](docs/screenshots/profile.png)
 
-Directories such as `screens/`, `services/`, `utils/` and an `assets/` tree are
-part of the intended architecture but are **not** created yet — they will be
-added in the phase that first needs them, to avoid empty placeholder files.
+## Features
 
-### Directory responsibilities
+- User onboarding
+- Form validation
+- Persistent profile information
+- Profile editing
+- Notification preferences
+- Logout functionality
+- Menu search
+- Menu category filtering
+- Food menu display
+- Stack navigation
+- Local data persistence
 
-- **`app/`** — Route files only. Screens compose components; they own navigation
-  and screen-level state.
-- **`components/common/`** — Generic, reusable presentational components.
-- **`components/forms/`** — Input controls; validation logic stays in the caller.
-- **`components/navigation/`** — App chrome/branding (headers). No routing logic.
-- **`constants/`** — The single source of truth for design tokens and route paths.
-- **`theme/`** — Aggregates the constants into one `theme` object for consumption.
-- **`hooks/`** — Reusable, testable React hooks.
-- **`types/`** — Shared, cross-cutting TypeScript types.
-- **`__tests__/`** — Unit tests for foundational code.
+## Running the project
 
-## Development setup
-
-Prerequisites: Node.js 20+, npm, and the Expo Go app (or an iOS/Android
-simulator) for on-device previews.
+Clone the repository and install the dependencies:
 
 ```bash
 npm install
-```
-
-## Running the application
-
-```bash
-npm run start      # Start the Expo dev server (choose a target from the CLI)
-npm run ios        # Open in the iOS simulator
-npm run android    # Open in the Android emulator
-npm run web        # Run in the browser
-```
-
-## Testing
-
-```bash
-npm test           # Run the Jest suite once
-npm run test:watch # Watch mode
-```
-
-Tests use the `jest-expo` preset with React Native Testing Library. The `@/*`
-path alias is mapped in the Jest config so tests import modules the same way the
-app does.
-
-## Code quality
-
-```bash
-npm run typecheck    # tsc --noEmit (strict)
-npm run lint         # ESLint
-npm run format       # Prettier write
-npm run format:check # Prettier check
-```
-
-Guiding principles: no `any`, centralized design tokens, small single-purpose
-components, explicit prop types, and no business logic inside UI components.
-
-## Future implementation phases
-
-- **Phase 2** — Implement the Welcome screen from the Figma design using the
-  existing components and tokens; add the Sign Up route and its form validation.
-- **Phase 3** — Preferences and Profile screens; introduce local persistence
-  (e.g. `expo-secure-store` / AsyncStorage) only when required.
-- **Phase 4** — Home/Menu screen with the menu list, categories and search;
-  introduce a data layer (`services/`) when a real data source is added.
-- **Later** — Add state management, networking and other libraries progressively,
-  only when an actual feature needs them.
