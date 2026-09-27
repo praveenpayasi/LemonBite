@@ -13,19 +13,19 @@ The Home screen was designed using a low-fidelity wireframe before implementatio
 ## Application Screens
 
 ### Welcome
-![Welcome Screen](docs/screenshots/welcome.png)
+![Welcome Screen](docs/screenshots/Welcome.png)
 
 ### Sign Up
-![Sign Up Screen](docs/screenshots/signup.png)
+![Sign Up Screen](docs/screenshots/Signup.png)
 
 ### Preferences
-![Preferences Screen](docs/screenshots/preferences.png)
+![Preferences Screen](docs/screenshots/Preferences.png)
 
 ### Home
-![Home Screen](docs/screenshots/home.png)
+![Home Screen](docs/screenshots/Home.png)
 
 ### Profile
-![Profile Screen](docs/screenshots/profile.png)
+![Profile Screen](docs/screenshots/Profile.png)
 
 ## Features
 
