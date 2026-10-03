@@ -1,17 +1,22 @@
 {
   "expo": {
-    "name": "LemonLite",
-    "slug": "lemonlite",
+    "name": "LemonBite",
+    "slug": "lemonbite",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "lemonlite",
+    "scheme": "lemonbite",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.prvn1992.lemonbite",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.prvn1992.lemonbite"
     },
     "web": {
       "bundler": "metro",
@@ -27,6 +32,12 @@
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ebaf7161-557a-460b-939c-29de3c8a80de"
+      }
     }
   }
 }
