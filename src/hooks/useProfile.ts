@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { loadOnboardingData, clearOnboardingData } from '@/services/storage/onboardingStorage';
-import { clearProfile, loadProfile, saveProfile } from '@/services/storage/profileStorage';
+import {
+  clearCategoryPreferences,
+  clearProfile,
+  loadProfile,
+  saveProfile,
+} from '@/services/storage/profileStorage';
 import {
   createDefaultProfile,
   mergeProfile,
@@ -129,7 +134,7 @@ export function useProfile(): UseProfileResult {
   }, [saved]);
 
   const logout = useCallback(async () => {
-    await Promise.all([clearProfile(), clearOnboardingData()]);
+    await Promise.all([clearProfile(), clearOnboardingData(), clearCategoryPreferences()]);
   }, []);
 
   const hasUnsavedChanges = useMemo(() => !profilesEqual(draft, saved), [draft, saved]);

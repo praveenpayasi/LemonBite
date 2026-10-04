@@ -4,7 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ProfileScreen from '@/app/profile';
 import { CartProvider } from '@/context/CartContext';
-import { loadProfile, saveProfile } from '@/services/storage/profileStorage';
+import {
+  loadCategoryPreferences,
+  loadProfile,
+  saveCategoryPreferences,
+  saveProfile,
+} from '@/services/storage/profileStorage';
 import { loadOnboardingData, saveOnboardingData } from '@/services/storage/onboardingStorage';
 import type { UserProfile } from '@/types';
 
@@ -255,5 +260,18 @@ describe('ProfileScreen', () => {
     });
     expect(await loadProfile()).toBeNull();
     expect(await loadOnboardingData()).toBeNull();
+  });
+
+  it('clears saved course preferences on logout so they do not leak to the next user', async () => {
+    await saveOnboardingData({ firstName: 'Tilly', email: 'tilly@doe.com' });
+    await saveProfile({ ...savedProfile, avatarUri: null });
+    await saveCategoryPreferences(['Starters', 'Mains']);
+    renderProfile();
+    await screen.findByDisplayValue('Tilly');
+
+    fireEvent.press(screen.getByRole('button', { name: 'Log out' }));
+
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/'));
+    expect(await loadCategoryPreferences()).toEqual([]);
   });
 });

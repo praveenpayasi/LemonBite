@@ -44,7 +44,7 @@
 -->
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Home.png" alt="LemonBite Home Screen" width="260" />
+  <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/home_menu.png" alt="LemonBite Home Screen" width="260" />
 </div>
 
 > **LemonBite** is a production-grade React Native portfolio application built to Meta's React Native best-practice standards. It features dynamic custom dish add-ons, 3-tier offline storage (Memory → SQLite → Remote API), line-item cart merging, interactive delivery settings, and complete screen-to-screen unit testing.
@@ -124,11 +124,11 @@ Concurrent callers share one in-flight promise, so duplicate loads are impossibl
 
 | Welcome | Sign Up | Preferences |
 | :---: | :---: | :---: |
-| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Welcome.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Signup.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Preferences.png" width="230" /> |
+| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/welcome_screen.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Signup.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Preferences.png" width="230" /> |
 
 | Home / Menu | Dish Details | Profile Settings |
 | :---: | :---: | :---: |
-| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Home.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/menu_details.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Profile.png" width="230" /> |
+| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/home_menu.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/menu_details.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/profile_screen.png" width="230" /> |
 
 | Order Summary / Cart | Success Confirmation |
 | :---: | :---: |
