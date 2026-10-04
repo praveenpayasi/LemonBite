@@ -37,3 +37,8 @@ export function getMenuCategories(menuItems: MenuItem[]): string[] {
     return rankDiff !== 0 ? rankDiff : a.localeCompare(b);
   });
 }
+
+/** Formats a price as `$12.99`. */
+export function formatPrice(price: number): string {
+  return `$${price.toFixed(2)}`;
+}

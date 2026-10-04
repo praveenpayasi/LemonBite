@@ -18,5 +18,6 @@ export interface Testable {
   testID?: string;
 }
 
+export * from './cart';
 export * from './menu';
 export * from './profile';

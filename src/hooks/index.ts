@@ -1,6 +1,8 @@
 export { useAppFonts } from './useAppFonts';
 export { useMenu } from './useMenu';
 export type { MenuStatus, UseMenuResult } from './useMenu';
+export { useMenuDetails, DISH_ADD_ONS, MIN_QUANTITY, MAX_QUANTITY } from './useMenuDetails';
+export type { MenuDetailsStatus, UseMenuDetailsResult } from './useMenuDetails';
 export { useDebouncedValue } from './useDebouncedValue';
 export { useProfile } from './useProfile';
 export type { ProfileTextField, UseProfileResult } from './useProfile';

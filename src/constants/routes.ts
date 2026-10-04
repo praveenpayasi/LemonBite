@@ -11,6 +11,12 @@ export const routes = {
   preferences: '/preferences',
   menu: '/menu',
   profile: '/profile',
+  cart: '/cart',
 } as const;
 
 export type AppRoute = (typeof routes)[keyof typeof routes];
+
+/** Dynamic route for a single dish, e.g. `/menu-details/greek-salad`. */
+export function menuDetailsRoute(dishId: string): `/menu-details/${string}` {
+  return `/menu-details/${dishId}`;
+}

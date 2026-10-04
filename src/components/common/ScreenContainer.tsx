@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   Keyboard,
   Platform,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
-import { colors, layout } from '@/theme';
+import { borderWidth, colors, layout, spacing } from '@/theme';
 import type { Testable, WithChildren } from '@/types';
 
 export interface ScreenContainerProps extends WithChildren, Testable {
@@ -20,6 +20,8 @@ export interface ScreenContainerProps extends WithChildren, Testable {
   scroll?: boolean;
   /** When true, insets scrollable content above the keyboard (form screens). */
   keyboardAvoiding?: boolean;
+  /** Pinned below the content; stays visible while the content scrolls. */
+  footer?: ReactNode;
   /** Optional style overrides for the inner content wrapper. */
   style?: StyleProp<ViewStyle>;
 }
@@ -33,6 +35,7 @@ export function ScreenContainer({
   edges = ['top', 'bottom'],
   scroll = false,
   keyboardAvoiding = false,
+  footer,
   style,
   testID,
 }: ScreenContainerProps) {
@@ -80,6 +83,7 @@ export function ScreenContainer({
         >
           {children}
         </ScrollView>
+        {footer ? <View style={styles.footer}>{footer}</View> : null}
       </SafeAreaView>
     );
   }
@@ -87,6 +91,7 @@ export function ScreenContainer({
   return (
     <SafeAreaView testID={testID} edges={edges} style={styles.safeArea}>
       <View style={[styles.content, styles.fill, style]}>{children}</View>
+      {footer ? <View style={styles.footer}>{footer}</View> : null}
     </SafeAreaView>
   );
 }
@@ -110,5 +115,16 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  footer: {
+    width: '100%',
+    maxWidth: layout.maxContentWidth,
+    alignSelf: 'center',
+    paddingHorizontal: layout.contentPaddingHorizontal,
+    paddingTop: spacing.smd,
+    paddingBottom: spacing.smd,
+    borderTopWidth: borderWidth.hairline,
+    borderTopColor: colors.border,
+    backgroundColor: colors.background,
   },
 });

@@ -9,7 +9,7 @@ import { useMenu } from '@/hooks';
 import { loadOnboardingData } from '@/services/storage/onboardingStorage';
 import { loadProfile } from '@/services/storage/profileStorage';
 import { getInitials, mergeProfile } from '@/utils/profile';
-import { routes } from '@/constants/routes';
+import { menuDetailsRoute, routes } from '@/constants/routes';
 import { colors, layout, spacing, textVariants } from '@/theme';
 
 interface HeaderAvatar {
@@ -58,6 +58,7 @@ export default function MenuScreen() {
   );
 
   const openProfile = () => router.push(routes.profile);
+  const openDish = (dishId: string) => router.push(menuDetailsRoute(dishId));
 
   if (status === 'loading') {
     return (
@@ -98,7 +99,7 @@ export default function MenuScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.itemWrapper}>
-            <MenuItem item={item} />
+            <MenuItem item={item} onPress={() => openDish(item.id)} />
           </View>
         )}
         renderSectionHeader={({ section }) => (

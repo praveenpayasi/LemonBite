@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppFonts } from '@/hooks';
+import { CartProvider } from '@/context/CartContext';
 import { isOnboardingComplete } from '@/services/storage/onboardingStorage';
 import { prepareMenuForHome } from '@/repositories/menuRepository';
 import { routes } from '@/constants/routes';
@@ -68,12 +69,14 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.background },
-        }}
-      />
+      <CartProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.background },
+          }}
+        />
+      </CartProvider>
     </SafeAreaProvider>
   );
 }

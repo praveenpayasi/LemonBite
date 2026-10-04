@@ -10,3 +10,5 @@ export { CategoryChip } from './CategoryChip';
 export type { CategoryChipProps } from './CategoryChip';
 export { MenuListHeader } from './MenuListHeader';
 export type { MenuListHeaderProps } from './MenuListHeader';
+export { AddOnRow } from './AddOnRow';
+export type { AddOnRowProps } from './AddOnRow';

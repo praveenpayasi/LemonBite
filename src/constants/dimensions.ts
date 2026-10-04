@@ -21,16 +21,20 @@ export const sizing = {
   inputHeight: 52,
   categoryButtonHeight: 64,
   rowHeight: 44,
+  /** Minimum accessible tap area (iOS HIG / Material). */
+  touchTarget: 44,
   iconSm: 16,
   iconMd: 24,
   iconLg: 32,
   logoMark: 40,
   checkbox: 22,
+  badge: 20,
   avatarSm: 48,
   avatarLg: 64,
   avatarActionWidth: 96,
   heroImageHeight: 330,
   heroThumbnail: 140,
+  detailHeroHeight: 240,
   menuItemImage: 86,
 } as const;
 

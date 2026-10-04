@@ -1,36 +1,27 @@
 import { memo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { formatPrice } from '@/utils/menu';
 import { borderWidth, colors, radii, sizing, spacing, textVariants } from '@/theme';
 import type { MenuItem as MenuItemModel, Testable } from '@/types';
 
 export interface MenuItemProps extends Testable {
   item: MenuItemModel;
-}
-
-function formatPrice(price: number): string {
-  return `$${price.toFixed(2)}`;
+  /** When provided the card becomes a button that opens the dish details. */
+  onPress?: () => void;
 }
 
 /**
  * Presentational menu item card (Figma "Dish card"): image, title, price and
  * description. Owns no data or navigation logic.
  */
-function MenuItemComponent({ item, testID }: MenuItemProps) {
+function MenuItemComponent({ item, onPress, testID }: MenuItemProps) {
   const price = formatPrice(item.price);
+  const label = `${item.title}, ${price}. ${item.description}`;
 
-  return (
-    <View
-      testID={testID}
-      accessible
-      accessibilityLabel={`${item.title}, ${price}. ${item.description}`}
-      style={styles.card}
-    >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.image}
-        resizeMode="cover"
-      />
+  const content = (
+    <>
+      <Image source={{ uri: item.image }} style={styles.image} resizeMode="cover" />
       <View style={styles.details}>
         <View style={styles.titleRow}>
           <Text style={styles.title} numberOfLines={1}>
@@ -42,7 +33,28 @@ function MenuItemComponent({ item, testID }: MenuItemProps) {
           {item.description}
         </Text>
       </View>
-    </View>
+    </>
+  );
+
+  if (!onPress) {
+    return (
+      <View testID={testID} accessible accessibilityLabel={label} style={styles.card}>
+        {content}
+      </View>
+    );
+  }
+
+  return (
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityHint="Navigates to dish details"
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+    >
+      {content}
+    </Pressable>
   );
 }
 
@@ -55,6 +67,9 @@ const styles = StyleSheet.create({
     borderWidth: borderWidth.hairline,
     borderColor: colors.border,
     backgroundColor: colors.background,
+  },
+  pressed: {
+    opacity: 0.85,
   },
   image: {
     width: sizing.menuItemImage,
