@@ -18,6 +18,7 @@ const palette = {
   grey: '#666666',
   lightGrey: '#CCCCCC',
   slate: '#9CA3AF',
+  scrim: 'rgba(51, 51, 51, 0.45)',
 } as const;
 
 export const colors = {
@@ -41,6 +42,9 @@ export const colors = {
   // States / borders
   border: palette.lightGrey,
   disabled: palette.lightGrey,
+
+  // Overlays
+  scrim: palette.scrim,
 
   // Static
   white: palette.white,

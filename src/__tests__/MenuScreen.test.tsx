@@ -166,12 +166,21 @@ describe('MenuScreen', () => {
     renderMenu();
     await screen.findByText('Greek Salad');
 
+    // Let each filter query settle before the next press: both dishes are already
+    // on screen pre-filter, so findByText alone would not wait for the query.
     fireEvent.press(screen.getByRole('button', { name: 'Starters' }));
+    await waitFor(() => expect(mockGetFiltered).toHaveBeenLastCalledWith('', ['Starters']));
+    await waitFor(() => expect(screen.queryByText('Grilled Fish')).toBeNull());
+
     fireEvent.press(screen.getByRole('button', { name: 'Mains' }));
+    await waitFor(() =>
+      expect(mockGetFiltered).toHaveBeenLastCalledWith('', ['Starters', 'Mains']),
+    );
     await screen.findByText('Grilled Fish');
 
     // Toggle Mains back off; Starters stays selected.
     fireEvent.press(screen.getByRole('button', { name: 'Mains' }));
+    await waitFor(() => expect(mockGetFiltered).toHaveBeenLastCalledWith('', ['Starters']));
 
     expect(screen.getByRole('button', { name: 'Starters', selected: true })).toBeOnTheScreen();
     await waitFor(() => expect(screen.queryByText('Grilled Fish')).toBeNull());

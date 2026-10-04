@@ -6,3 +6,5 @@ export { RecommendedDishes } from './RecommendedDishes';
 export type { RecommendedDishesProps } from './RecommendedDishes';
 export { PriceSummary } from './PriceSummary';
 export type { PriceSummaryProps } from './PriceSummary';
+export { SuccessModalCard } from './SuccessModalCard';
+export type { SuccessModalCardProps } from './SuccessModalCard';

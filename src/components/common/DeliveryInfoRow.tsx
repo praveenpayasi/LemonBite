@@ -1,12 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { DELIVERY_ESTIMATE_MINUTES } from '@/constants/cart';
 import { colors, radii, sizing, spacing, textVariants } from '@/theme';
 import type { Testable } from '@/types';
 
 export interface DeliveryInfoRowProps extends Testable {
   /** Human-readable delivery estimate. */
   label?: string;
-  onChange: () => void;
+  /** Omit to render the row as a read-only indicator with no Change action. */
+  onChange?: () => void;
 }
 
 /** Delivery truck glyph drawn with views so the app needs no icon dependency. */
@@ -25,9 +27,9 @@ function TruckIcon() {
   );
 }
 
-/** Delivery estimate with a secondary "Change" action. Presentational. */
+/** Delivery estimate with an optional secondary "Change" action. Presentational. */
 export function DeliveryInfoRow({
-  label = 'Delivery time: 20 minutes',
+  label = `Delivery time: ${DELIVERY_ESTIMATE_MINUTES} minutes`,
   onChange,
   testID,
 }: DeliveryInfoRowProps) {
@@ -35,16 +37,18 @@ export function DeliveryInfoRow({
     <View style={styles.row} testID={testID}>
       <TruckIcon />
       <Text style={styles.label}>{label}</Text>
-      <Pressable
-        onPress={onChange}
-        accessibilityRole="button"
-        accessibilityLabel="Change delivery time"
-        accessibilityHint="Opens delivery time options"
-        testID="change-delivery"
-        style={({ pressed }) => [styles.changeButton, pressed && styles.pressed]}
-      >
-        <Text style={styles.changeLabel}>Change</Text>
-      </Pressable>
+      {onChange ? (
+        <Pressable
+          onPress={onChange}
+          accessibilityRole="button"
+          accessibilityLabel="Change delivery time"
+          accessibilityHint="Opens delivery time options"
+          testID="change-delivery"
+          style={({ pressed }) => [styles.changeButton, pressed && styles.pressed]}
+        >
+          <Text style={styles.changeLabel}>Change</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }

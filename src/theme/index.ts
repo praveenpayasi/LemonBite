@@ -1,6 +1,6 @@
 import { colors, palette } from '@/constants/colors';
 import { spacing } from '@/constants/spacing';
-import { radii, borderWidth, sizing, layout } from '@/constants/dimensions';
+import { radii, borderWidth, sizing, layout, elevation } from '@/constants/dimensions';
 import { textVariants, fontFamilies, fontSizes } from '@/constants/typography';
 
 /**
@@ -18,6 +18,7 @@ export const theme = {
   borderWidth,
   sizing,
   layout,
+  elevation,
   typography: {
     families: fontFamilies,
     sizes: fontSizes,
@@ -35,6 +36,7 @@ export {
   borderWidth,
   sizing,
   layout,
+  elevation,
   textVariants,
   fontFamilies,
   fontSizes,

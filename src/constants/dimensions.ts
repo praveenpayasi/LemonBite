@@ -39,6 +39,13 @@ export const sizing = {
   cartThumbnail: 60,
   recommendedCardWidth: 168,
   recommendedImageHeight: 96,
+  successIcon: 72,
+} as const;
+
+/** Shadow radius / Android elevation pairs for raised surfaces. */
+export const elevation = {
+  none: 0,
+  card: 8,
 } as const;
 
 /**
@@ -58,3 +65,4 @@ export const layout = {
 export type RadiusToken = keyof typeof radii;
 export type SizingToken = keyof typeof sizing;
 export type LayoutToken = keyof typeof layout;
+export type ElevationToken = keyof typeof elevation;

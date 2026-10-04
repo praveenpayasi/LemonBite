@@ -10,3 +10,5 @@ export { useHeaderAvatar } from './useHeaderAvatar';
 export type { HeaderAvatar } from './useHeaderAvatar';
 export { useCartScreen } from './useCartScreen';
 export type { UseCartScreenResult } from './useCartScreen';
+export { useOrderConfirmation } from './useOrderConfirmation';
+export type { OrderSnapshot, UseOrderConfirmationResult } from './useOrderConfirmation';
