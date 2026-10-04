@@ -124,7 +124,7 @@ Concurrent callers share one in-flight promise, so duplicate loads are impossibl
 
 | Welcome | Sign Up | Preferences |
 | :---: | :---: | :---: |
-| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/welcome_screen.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Signup.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Preferences.png" width="230" /> |
+| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/welcome_screen.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/signup.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/preferences.png" width="230" /> |
 
 | Home / Menu | Dish Details | Profile Settings |
 | :---: | :---: | :---: |
