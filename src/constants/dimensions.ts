@@ -36,6 +36,9 @@ export const sizing = {
   heroThumbnail: 140,
   detailHeroHeight: 240,
   menuItemImage: 86,
+  cartThumbnail: 60,
+  recommendedCardWidth: 168,
+  recommendedImageHeight: 96,
 } as const;
 
 /**

@@ -27,4 +27,8 @@ export interface CartState {
   items: CartItem[];
   totalItemsCount: number;
   subtotal: number;
+  deliveryFee: number;
+  serviceFee: number;
+  /** `subtotal + deliveryFee + serviceFee`, or 0 while the cart is empty. */
+  total: number;
 }

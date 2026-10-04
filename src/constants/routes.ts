@@ -12,6 +12,7 @@ export const routes = {
   menu: '/menu',
   profile: '/profile',
   cart: '/cart',
+  orderConfirmation: '/order-confirmation',
 } as const;
 
 export type AppRoute = (typeof routes)[keyof typeof routes];

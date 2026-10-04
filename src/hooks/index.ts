@@ -6,3 +6,7 @@ export type { MenuDetailsStatus, UseMenuDetailsResult } from './useMenuDetails';
 export { useDebouncedValue } from './useDebouncedValue';
 export { useProfile } from './useProfile';
 export type { ProfileTextField, UseProfileResult } from './useProfile';
+export { useHeaderAvatar } from './useHeaderAvatar';
+export type { HeaderAvatar } from './useHeaderAvatar';
+export { useCartScreen } from './useCartScreen';
+export type { UseCartScreenResult } from './useCartScreen';

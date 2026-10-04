@@ -1,21 +1,12 @@
-import { useCallback, useState } from 'react';
 import { ActivityIndicator, SectionList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 import { PrimaryButton } from '@/components/common';
 import { MenuItem, MenuListHeader, MenuSectionHeader } from '@/components/menu';
-import { useMenu } from '@/hooks';
-import { loadOnboardingData } from '@/services/storage/onboardingStorage';
-import { loadProfile } from '@/services/storage/profileStorage';
-import { getInitials, mergeProfile } from '@/utils/profile';
+import { useHeaderAvatar, useMenu } from '@/hooks';
 import { menuDetailsRoute, routes } from '@/constants/routes';
 import { colors, layout, spacing, textVariants } from '@/theme';
-
-interface HeaderAvatar {
-  uri: string | null;
-  initials: string;
-}
 
 /**
  * Menu / Home screen (Figma node 2:2). Requests menu data through the repository
@@ -35,27 +26,7 @@ export default function MenuScreen() {
     toggleCategory,
     reload,
   } = useMenu();
-  const [avatar, setAvatar] = useState<HeaderAvatar>({ uri: null, initials: '' });
-
-  // Reflect the latest saved avatar/initials whenever the screen regains focus.
-  useFocusEffect(
-    useCallback(() => {
-      let active = true;
-      (async () => {
-        const [profile, onboarding] = await Promise.all([loadProfile(), loadOnboardingData()]);
-        const merged = mergeProfile(profile, onboarding);
-        if (active) {
-          setAvatar({
-            uri: merged.avatarUri,
-            initials: getInitials(merged.firstName, merged.lastName),
-          });
-        }
-      })();
-      return () => {
-        active = false;
-      };
-    }, []),
-  );
+  const avatar = useHeaderAvatar();
 
   const openProfile = () => router.push(routes.profile);
   const openDish = (dishId: string) => router.push(menuDetailsRoute(dishId));

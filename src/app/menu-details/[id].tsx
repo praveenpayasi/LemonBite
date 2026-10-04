@@ -1,36 +1,19 @@
-import { useCallback, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { PrimaryButton, QuantitySelector, ScreenContainer } from '@/components/common';
+import {
+  DeliveryInfoRow,
+  PrimaryButton,
+  QuantitySelector,
+  ScreenContainer,
+} from '@/components/common';
 import { AddOnRow } from '@/components/menu';
 import { AppHeader } from '@/components/navigation';
-import { useMenuDetails } from '@/hooks';
-import { loadOnboardingData } from '@/services/storage/onboardingStorage';
-import { loadProfile } from '@/services/storage/profileStorage';
-import { getInitials, mergeProfile } from '@/utils/profile';
+import { useHeaderAvatar, useMenuDetails } from '@/hooks';
 import { formatPrice } from '@/utils/menu';
 import { routes } from '@/constants/routes';
 import { colors, radii, sizing, spacing, textVariants } from '@/theme';
-
-const DELIVERY_TIME = 'Delivery time: 20 minutes';
-
-interface HeaderAvatar {
-  uri: string | null;
-  initials: string;
-}
-
-/** Delivery truck glyph drawn with views so the app needs no icon dependency. */
-function TruckIcon() {
-  return (
-    <View style={styles.truck} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      <View style={styles.truckBody} />
-      <View style={styles.truckCab} />
-      <View style={[styles.truckWheel, styles.truckWheelLeft]} />
-      <View style={[styles.truckWheel, styles.truckWheelRight]} />
-    </View>
-  );
-}
 
 /**
  * Menu details screen (`/menu-details/[id]`). Composition only: all dish
@@ -54,27 +37,8 @@ export default function MenuDetailsScreen() {
     handleAddToCart,
   } = useMenuDetails(dishId);
 
-  const [avatar, setAvatar] = useState<HeaderAvatar>({ uri: null, initials: '' });
+  const avatar = useHeaderAvatar();
   const [feedback, setFeedback] = useState<string | null>(null);
-
-  useFocusEffect(
-    useCallback(() => {
-      let active = true;
-      (async () => {
-        const [profile, onboarding] = await Promise.all([loadProfile(), loadOnboardingData()]);
-        const merged = mergeProfile(profile, onboarding);
-        if (active) {
-          setAvatar({
-            uri: merged.avatarUri,
-            initials: getInitials(merged.firstName, merged.lastName),
-          });
-        }
-      })();
-      return () => {
-        active = false;
-      };
-    }, []),
-  );
 
   const header = (
     <AppHeader
@@ -160,19 +124,7 @@ export default function MenuDetailsScreen() {
 
       <Text style={styles.description}>{dish.description}</Text>
 
-      <View style={styles.deliveryRow}>
-        <TruckIcon />
-        <Text style={styles.deliveryText}>{DELIVERY_TIME}</Text>
-        <Pressable
-          onPress={() => setFeedback('Delivery options are coming soon.')}
-          accessibilityRole="button"
-          accessibilityLabel="Change delivery time"
-          testID="change-delivery"
-          style={({ pressed }) => [styles.changeButton, pressed && styles.pressed]}
-        >
-          <Text style={styles.changeLabel}>Change</Text>
-        </Pressable>
-      </View>
+      <DeliveryInfoRow onChange={() => setFeedback('Delivery options are coming soon.')} />
 
       <View style={styles.section}>
         <Text accessibilityRole="header" style={styles.sectionTitle}>
@@ -257,30 +209,6 @@ const styles = StyleSheet.create({
     ...textVariants.body,
     color: colors.textPrimary,
   },
-  deliveryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.smd,
-    paddingVertical: spacing.sm,
-  },
-  deliveryText: {
-    ...textVariants.lead,
-    flex: 1,
-    color: colors.textPrimary,
-  },
-  changeButton: {
-    minHeight: sizing.touchTarget,
-    justifyContent: 'center',
-    paddingHorizontal: spacing.sm,
-  },
-  changeLabel: {
-    ...textVariants.category,
-    color: colors.primary,
-    textDecorationLine: 'underline',
-  },
-  pressed: {
-    opacity: 0.7,
-  },
   section: {
     gap: spacing.smd,
   },
@@ -294,42 +222,5 @@ const styles = StyleSheet.create({
   feedback: {
     ...textVariants.lead,
     color: colors.primary,
-  },
-  truck: {
-    width: sizing.iconMd,
-    height: sizing.iconSm,
-  },
-  truckBody: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: 14,
-    height: 10,
-    borderRadius: 2,
-    backgroundColor: colors.primary,
-  },
-  truckCab: {
-    position: 'absolute',
-    right: 0,
-    top: 3,
-    width: 9,
-    height: 7,
-    borderTopRightRadius: 4,
-    borderRadius: 2,
-    backgroundColor: colors.primary,
-  },
-  truckWheel: {
-    position: 'absolute',
-    bottom: 0,
-    width: 5,
-    height: 5,
-    borderRadius: radii.pill,
-    backgroundColor: colors.textPrimary,
-  },
-  truckWheelLeft: {
-    left: 3,
-  },
-  truckWheelRight: {
-    right: 3,
   },
 });
