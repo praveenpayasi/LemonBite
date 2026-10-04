@@ -29,7 +29,6 @@
     <img src="https://img.shields.io/badge/Type_Check-0_Errors-success?style=flat-square&logo=typescript" alt="TypeScript OK" />
     <img src="https://img.shields.io/badge/Tests-238_Passing-blueviolet?style=flat-square&logo=jest" alt="Tests" />
     <img src="https://img.shields.io/badge/Lint-0_Warnings-success?style=flat-square&logo=eslint" alt="ESLint" />
-    <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License" />
   </p>
 
 </div>
@@ -127,18 +126,15 @@ Concurrent callers share one in-flight promise, so duplicate loads are impossibl
 | :---: | :---: | :---: |
 | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Welcome.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Signup.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Preferences.png" width="230" /> |
 
-| Home / Menu | Profile Settings |
+| Home / Menu | Dish Details | Profile Settings |
+| :---: | :---: | :---: |
+| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Home.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/menu_details.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Profile.png" width="230" /> |
+
+| Order Summary / Cart | Success Confirmation |
 | :---: | :---: |
-| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Home.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/Profile.png" width="230" /> |
+| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/cart_summary.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/order_confirmation.png" width="230" /> |
 
 </div>
-
-<!-- TODO: capture these three screens, save them to docs/screenshots/, then add the row below.
-
-| Dish Details | Order Summary / Cart | Success Confirmation |
-| :---: | :---: | :---: |
-| <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/menu_details.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/cart_summary.png" width="230" /> | <img src="https://raw.githubusercontent.com/praveenpayasi/LemonBite/main/docs/screenshots/order_confirmation.png" width="230" /> |
--->
 
 ### Screen Inventory
 
