@@ -1,12 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { MenuSearch } from '@/components/menu/MenuSearch';
-import { ProfileAvatar } from '@/components/profile';
-import { colors, radii, sizing, spacing, textVariants } from '@/theme';
+import { AppHeader } from '@/components/navigation';
+import { colors, layout, radii, sizing, spacing, textVariants } from '@/theme';
 import type { Testable } from '@/types';
 
 import heroImage from '@/assets/images/welcome-hero.jpg';
-import lemonMark from '@/assets/images/little-lemon-mark.png';
 
 const CITY = 'Chicago';
 const DESCRIPTION =
@@ -20,7 +19,7 @@ export interface MenuHeroProps extends Testable {
   onPressProfile: () => void;
 }
 
-/** Menu screen header: brand nav bar, green restaurant hero, and search field. */
+/** Menu screen header: app header with cart badge, green restaurant hero, and search field. */
 export function MenuHero({
   searchQuery,
   onSearchChange,
@@ -30,21 +29,14 @@ export function MenuHero({
 }: MenuHeroProps) {
   return (
     <View>
-      <View style={styles.navBar}>
-        <Image
-          source={lemonMark}
-          style={styles.navMark}
-          accessibilityLabel="LemonBite"
-        />
-        <Pressable
-          onPress={onPressProfile}
-          accessibilityRole="button"
-          accessibilityLabel="Open profile"
-          testID="open-profile"
-        >
-          <ProfileAvatar uri={avatarUri} initials={avatarInitials} size={sizing.avatarSm} />
-        </Pressable>
-      </View>
+      <AppHeader
+        showLogo
+        showCart
+        avatarUri={avatarUri}
+        avatarInitials={avatarInitials}
+        onPressAvatar={onPressProfile}
+        style={styles.header}
+      />
 
       <View style={styles.hero}>
         <View style={styles.heroTopRow}>
@@ -69,16 +61,8 @@ export function MenuHero({
 }
 
 const styles = StyleSheet.create({
-  navBar: {
-    height: sizing.buttonHeight,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-  },
-  navMark: {
-    width: sizing.logoMark,
-    height: sizing.logoMark,
+  header: {
+    paddingHorizontal: layout.contentPaddingHorizontal,
   },
   hero: {
     gap: spacing.md,

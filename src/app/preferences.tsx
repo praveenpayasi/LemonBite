@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { LittleLemonLogo, PrimaryButton, ScreenContainer } from '@/components/common';
 import { CategoryOption } from '@/components/forms';
 import { setOnboardingComplete } from '@/services/storage/onboardingStorage';
+import { saveCategoryPreferences } from '@/services/storage/profileStorage';
 import { prepareMenuForHome } from '@/repositories/menuRepository';
 import { colors, layout, radii, sizing, spacing, textVariants } from '@/theme';
 import { routes } from '@/constants/routes';
@@ -18,8 +19,8 @@ type Category = (typeof CATEGORIES)[number];
 
 /**
  * Preferences screen (Figma node 61:175) — onboarding course selection.
- * Users toggle the courses they enjoy; selections live in local state only.
- * Onward navigation to Home/Menu arrives in a later phase.
+ * The chosen courses are persisted and become the Menu screen's default
+ * category filters on first load.
  */
 export default function PreferencesScreen() {
   const router = useRouter();
@@ -46,7 +47,11 @@ export default function PreferencesScreen() {
     // Prepare the menu (and warm its images) before Home is shown, so it has
     // no visible pop-in; remember completion for future launches.
     try {
-      await Promise.all([setOnboardingComplete(), prepareMenuForHome()]);
+      await Promise.all([
+        saveCategoryPreferences([...selected]),
+        setOnboardingComplete(),
+        prepareMenuForHome(),
+      ]);
     } catch (error) {
       console.error('Failed to prepare onboarding completion', error);
     }

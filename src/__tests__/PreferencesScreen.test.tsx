@@ -1,7 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import PreferencesScreen from '@/app/preferences';
+import { loadCategoryPreferences } from '@/services/storage/profileStorage';
 
 const mockReplace = jest.fn();
 jest.mock('expo-router', () => ({
@@ -28,7 +30,8 @@ function renderPreferences() {
 }
 
 describe('PreferencesScreen', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    await AsyncStorage.clear();
     mockReplace.mockClear();
   });
   it('renders the heading, every option and the primary action', () => {
@@ -100,5 +103,37 @@ describe('PreferencesScreen', () => {
     await waitFor(() => {
       expect(mockReplace).toHaveBeenCalledWith('/menu');
     });
+  });
+
+  it('persists the selected courses before navigating', async () => {
+    renderPreferences();
+
+    fireEvent.press(screen.getByRole('checkbox', { name: 'Starters' }));
+    fireEvent.press(screen.getByRole('checkbox', { name: 'Desserts' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Next' }));
+
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/menu'));
+    await expect(loadCategoryPreferences()).resolves.toEqual(['Starters', 'Desserts']);
+  });
+
+  it('persists an empty selection when nothing is chosen', async () => {
+    renderPreferences();
+
+    fireEvent.press(screen.getByRole('button', { name: 'Next' }));
+
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/menu'));
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
+  });
+
+  it('does not persist a course that was toggled back off', async () => {
+    renderPreferences();
+
+    fireEvent.press(screen.getByRole('checkbox', { name: 'Mains' }));
+    fireEvent.press(screen.getByRole('checkbox', { name: 'Sides' }));
+    fireEvent.press(screen.getByRole('checkbox', { name: 'Mains' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Next' }));
+
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/menu'));
+    await expect(loadCategoryPreferences()).resolves.toEqual(['Sides']);
   });
 });

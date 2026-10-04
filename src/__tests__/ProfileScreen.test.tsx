@@ -3,14 +3,22 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ProfileScreen from '@/app/profile';
+import { CartProvider } from '@/context/CartContext';
 import { loadProfile, saveProfile } from '@/services/storage/profileStorage';
 import { loadOnboardingData, saveOnboardingData } from '@/services/storage/onboardingStorage';
 import type { UserProfile } from '@/types';
 
 const mockBack = jest.fn();
 const mockReplace = jest.fn();
+const mockNavigate = jest.fn();
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ back: mockBack, replace: mockReplace, push: jest.fn() }),
+  useRouter: () => ({
+    back: mockBack,
+    replace: mockReplace,
+    push: jest.fn(),
+    navigate: mockNavigate,
+  }),
+  usePathname: () => '/profile',
 }));
 
 const mockRequestPermission = jest.fn();
@@ -42,7 +50,9 @@ const savedProfile: UserProfile = {
 function renderProfile() {
   return render(
     <SafeAreaProvider initialMetrics={metrics}>
-      <ProfileScreen />
+      <CartProvider>
+        <ProfileScreen />
+      </CartProvider>
     </SafeAreaProvider>,
   );
 }

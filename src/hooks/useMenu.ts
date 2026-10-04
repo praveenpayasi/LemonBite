@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getMenu, peekMenuCache } from '@/repositories/menuRepository';
 import { getFilteredMenuItems } from '@/services/database/menuDatabase';
+import { loadCategoryPreferences } from '@/services/storage/profileStorage';
 import { getMenuCategories, getSectionListData } from '@/utils/menu';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import type { MenuItem, MenuSection } from '@/types';
@@ -36,21 +37,37 @@ export function useMenu(): UseMenuResult {
   const [status, setStatus] = useState<MenuStatus>(initialCache ? 'ready' : 'loading');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  // Preferences seed the filters once; later user toggles must never be overwritten.
+  const preferencesAppliedRef = useRef(false);
 
   const debouncedSearch = useDebouncedValue(searchQuery, SEARCH_DEBOUNCE_MS);
   const hasActiveFilters = debouncedSearch.trim() !== '' || selectedCategories.length > 0;
 
+  /** Seeds the chips from onboarding, limited to categories the menu actually has. */
+  const applyPreferences = useCallback((saved: string[], menuItems: MenuItem[]) => {
+    if (preferencesAppliedRef.current) {
+      return;
+    }
+    preferencesAppliedRef.current = true;
+    const available = new Set(menuItems.map((item) => item.category));
+    const applicable = saved.filter((category) => available.has(category));
+    if (applicable.length > 0) {
+      setSelectedCategories(applicable);
+    }
+  }, []);
+
   const load = useCallback(async () => {
     try {
-      const data = await getMenu();
+      const [data, saved] = await Promise.all([getMenu(), loadCategoryPreferences()]);
       setAllItems(data);
       setFilteredItems(data);
+      applyPreferences(saved, data);
       setStatus('ready');
     } catch (error) {
       console.error('Failed to load menu', error);
       setStatus('error');
     }
-  }, []);
+  }, [applyPreferences]);
 
   useEffect(() => {
     if (initialCache) {
@@ -60,6 +77,26 @@ export function useMenu(): UseMenuResult {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load, initialCache]);
+
+  // The cached path skips `load`, so preferences are resolved separately.
+  useEffect(() => {
+    if (!initialCache) {
+      return;
+    }
+    let active = true;
+    loadCategoryPreferences()
+      .then((saved) => {
+        if (active) {
+          applyPreferences(saved, initialCache);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load category preferences', error);
+      });
+    return () => {
+      active = false;
+    };
+  }, [initialCache, applyPreferences]);
 
   // Run the SQLite filter query whenever active filters change (search is debounced).
   useEffect(() => {
@@ -87,6 +124,7 @@ export function useMenu(): UseMenuResult {
   }, [load]);
 
   const toggleCategory = useCallback((category: string) => {
+    preferencesAppliedRef.current = true;
     setSelectedCategories((current) =>
       current.includes(category)
         ? current.filter((value) => value !== category)

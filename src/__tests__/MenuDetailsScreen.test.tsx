@@ -14,10 +14,17 @@ jest.mock('@/repositories/menuRepository', () => ({
 const mockBack = jest.fn();
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
+const mockNavigate = jest.fn();
 let mockParams: Record<string, string> = { id: 'greek-salad' };
 
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ back: mockBack, push: mockPush, replace: mockReplace }),
+  useRouter: () => ({
+    back: mockBack,
+    push: mockPush,
+    replace: mockReplace,
+    navigate: mockNavigate,
+  }),
+  usePathname: () => '/menu-details/greek-salad',
   useLocalSearchParams: () => mockParams,
   useFocusEffect: jest.fn(),
 }));

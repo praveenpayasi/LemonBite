@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 
-import { LittleLemonLogo, PrimaryButton, ScreenContainer } from '@/components/common';
+import { PrimaryButton, ScreenContainer } from '@/components/common';
 import { TextInputField } from '@/components/forms';
-import { AvatarEditor, NotificationCheckbox, ProfileAvatar } from '@/components/profile';
+import { AppHeader } from '@/components/navigation';
+import { AvatarEditor, NotificationCheckbox } from '@/components/profile';
 import { useProfile } from '@/hooks';
 import { getInitials } from '@/utils/profile';
 import { routes } from '@/constants/routes';
-import { borderWidth, colors, fontSizes, radii, sizing, spacing, textVariants } from '@/theme';
+import { borderWidth, colors, radii, spacing, textVariants } from '@/theme';
 
 interface Feedback {
   tone: 'success' | 'error';
@@ -100,23 +101,14 @@ export default function ProfileScreen() {
 
   return (
     <ScreenContainer scroll keyboardAvoiding style={styles.screen}>
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="Go back"
-          style={styles.back}
-        >
-          <Text style={styles.backArrow}>←</Text>
-        </Pressable>
-        <LittleLemonLogo label="LemonBite" style={styles.logo} />
-        <ProfileAvatar
-          uri={draft.avatarUri}
-          initials={initials}
-          size={sizing.avatarSm}
-          accessibilityLabel="Your profile photo"
-        />
-      </View>
+      <AppHeader
+        showBack
+        showLogo
+        showCart
+        avatarUri={draft.avatarUri}
+        avatarInitials={initials}
+        avatarLabel="Your profile photo"
+      />
 
       {loadError ? (
         <Text accessibilityRole="alert" style={styles.errorBanner}>
@@ -254,29 +246,6 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.smd,
     paddingBottom: spacing.lg,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  back: {
-    width: sizing.avatarSm,
-    height: sizing.avatarSm,
-    borderRadius: sizing.avatarSm / 2,
-    backgroundColor: colors.background,
-    borderWidth: borderWidth.hairline,
-    borderColor: colors.border,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backArrow: {
-    fontSize: fontSizes.xl,
-    lineHeight: fontSizes.xl,
-    color: colors.textPrimary,
-  },
-  logo: {
-    fontSize: fontSizes.xxxl,
   },
   section: {
     width: '100%',

@@ -15,9 +15,16 @@ jest.mock('@/repositories/menuRepository', () => ({
 const mockBack = jest.fn();
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
+const mockNavigate = jest.fn();
 
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ back: mockBack, push: mockPush, replace: mockReplace }),
+  useRouter: () => ({
+    back: mockBack,
+    push: mockPush,
+    replace: mockReplace,
+    navigate: mockNavigate,
+  }),
+  usePathname: () => '/cart',
   useFocusEffect: jest.fn(),
 }));
 
@@ -231,6 +238,19 @@ describe('CartScreen', () => {
       fireEvent.press(screen.getByLabelText('Open profile'));
 
       expect(mockPush).toHaveBeenCalledWith('/profile');
+    });
+
+    it('disables the header cart button while already on the cart screen', () => {
+      seedCart();
+
+      const cartButton = screen.getByTestId('header-cart-button');
+      expect(cartButton).toBeDisabled();
+
+      fireEvent.press(cartButton);
+      fireEvent.press(cartButton);
+
+      expect(mockNavigate).not.toHaveBeenCalled();
+      expect(mockPush).not.toHaveBeenCalledWith('/cart');
     });
   });
 });

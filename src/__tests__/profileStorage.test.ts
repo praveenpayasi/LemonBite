@@ -1,6 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { clearProfile, loadProfile, saveProfile } from '@/services/storage/profileStorage';
+import {
+  clearCategoryPreferences,
+  clearProfile,
+  loadCategoryPreferences,
+  loadProfile,
+  saveCategoryPreferences,
+  saveProfile,
+} from '@/services/storage/profileStorage';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
 import type { UserProfile } from '@/types';
 
@@ -62,5 +69,56 @@ describe('profileStorage', () => {
     jest.spyOn(AsyncStorage, 'setItem').mockRejectedValueOnce(new Error('disk full'));
 
     await expect(saveProfile(profile)).rejects.toThrow('disk full');
+  });
+});
+
+describe('category preferences storage', () => {
+  beforeEach(async () => {
+    await AsyncStorage.clear();
+    jest.restoreAllMocks();
+  });
+
+  it('returns an empty list when nothing is stored', async () => {
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
+  });
+
+  it('round-trips the selected categories', async () => {
+    await saveCategoryPreferences(['Starters', 'Desserts']);
+
+    await expect(loadCategoryPreferences()).resolves.toEqual(['Starters', 'Desserts']);
+  });
+
+  it('persists an empty selection', async () => {
+    await saveCategoryPreferences([]);
+
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
+  });
+
+  it('ignores malformed JSON', async () => {
+    await AsyncStorage.setItem(STORAGE_KEYS.categoryPreferences, '{not json');
+
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
+  });
+
+  it('drops non-string entries', async () => {
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.categoryPreferences,
+      JSON.stringify(['Mains', 42, null, 'Sides']),
+    );
+
+    await expect(loadCategoryPreferences()).resolves.toEqual(['Mains', 'Sides']);
+  });
+
+  it('returns an empty list when the stored value is not an array', async () => {
+    await AsyncStorage.setItem(STORAGE_KEYS.categoryPreferences, JSON.stringify({ a: 1 }));
+
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
+  });
+
+  it('clears the stored preferences', async () => {
+    await saveCategoryPreferences(['Mains']);
+    await clearCategoryPreferences();
+
+    await expect(loadCategoryPreferences()).resolves.toEqual([]);
   });
 });

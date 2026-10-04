@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 
 import { LittleLemonLogo } from '@/components/common';
 import { ProfileAvatar } from '@/components/profile';
@@ -21,7 +21,10 @@ export interface AppHeaderProps extends Testable {
   /** Renders a profile avatar in the trailing slot when provided (may be null for initials). */
   avatarUri?: string | null;
   avatarInitials?: string;
+  /** Omit to render the avatar as a non-interactive image rather than a button. */
   onPressAvatar?: () => void;
+  /** Accessible name for the avatar. */
+  avatarLabel?: string;
   /** Custom trailing element; takes precedence over the built-in cart/avatar. */
   right?: ReactNode;
   /** Optional style overrides for the header container. */
@@ -41,18 +44,23 @@ function CartGlyph() {
 /** Cart button + live count badge. Split out so `useCart` is never called conditionally. */
 function CartButton() {
   const router = useRouter();
+  const pathname = usePathname();
   const { totalItemsCount } = useCart();
+  const isOnCart = pathname === routes.cart;
   const label =
     totalItemsCount > 0 ? `Open cart, ${totalItemsCount} items` : 'Open cart, cart is empty';
 
   return (
     <Pressable
-      onPress={() => router.push(routes.cart)}
+      // `navigate` reuses an existing cart screen instead of stacking duplicates.
+      onPress={() => router.navigate(routes.cart)}
+      disabled={isOnCart}
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityHint="Opens your cart"
+      accessibilityHint={isOnCart ? undefined : 'Opens your cart'}
+      accessibilityState={{ disabled: isOnCart }}
       testID="header-cart-button"
-      style={({ pressed }) => [styles.cartButton, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.cartButton, pressed && !isOnCart && styles.pressed]}
     >
       <CartGlyph />
       {totalItemsCount > 0 ? (
@@ -77,6 +85,7 @@ export function AppHeader({
   avatarUri,
   avatarInitials = '',
   onPressAvatar,
+  avatarLabel,
   right,
   style,
   testID,
@@ -104,16 +113,30 @@ export function AppHeader({
       <View style={styles.trailing}>
         {showCart ? <CartButton /> : null}
         {showAvatar ? (
-          <Pressable
-            onPress={onPressAvatar}
-            disabled={!onPressAvatar}
-            accessibilityRole="button"
-            accessibilityLabel="Open profile"
-            testID="header-avatar-button"
-            style={({ pressed }) => [styles.avatarButton, pressed && styles.pressed]}
-          >
-            <ProfileAvatar uri={avatarUri ?? null} initials={avatarInitials} size={sizing.iconLg} />
-          </Pressable>
+          onPressAvatar ? (
+            <Pressable
+              onPress={onPressAvatar}
+              accessibilityRole="button"
+              accessibilityLabel={avatarLabel ?? 'Open profile'}
+              accessibilityHint="Opens your profile"
+              testID="header-avatar-button"
+              style={({ pressed }) => [styles.avatarButton, pressed && styles.pressed]}
+            >
+              <ProfileAvatar
+                uri={avatarUri ?? null}
+                initials={avatarInitials}
+                size={sizing.iconLg}
+              />
+            </Pressable>
+          ) : (
+            <ProfileAvatar
+              uri={avatarUri ?? null}
+              initials={avatarInitials}
+              size={sizing.iconLg}
+              accessibilityLabel={avatarLabel ?? 'Your profile photo'}
+              testID="header-avatar"
+            />
+          )
         ) : null}
       </View>
     ) : null);

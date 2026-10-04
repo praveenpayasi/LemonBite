@@ -55,3 +55,27 @@ export async function loadProfile(): Promise<UserProfile | null> {
 export async function clearProfile(): Promise<void> {
   await AsyncStorage.removeItem(STORAGE_KEYS.profile);
 }
+
+/** Persists the course categories chosen during onboarding. */
+export async function saveCategoryPreferences(categories: string[]): Promise<void> {
+  await AsyncStorage.setItem(STORAGE_KEYS.categoryPreferences, JSON.stringify(categories));
+}
+
+/** Loads the saved course preferences; an empty array when none are stored or the JSON is invalid. */
+export async function loadCategoryPreferences(): Promise<string[]> {
+  const raw = await AsyncStorage.getItem(STORAGE_KEYS.categoryPreferences);
+  if (!raw) {
+    return [];
+  }
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((value) => typeof value === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Clears the saved course preferences (used on logout). */
+export async function clearCategoryPreferences(): Promise<void> {
+  await AsyncStorage.removeItem(STORAGE_KEYS.categoryPreferences);
+}

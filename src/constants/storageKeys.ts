@@ -5,4 +5,5 @@ export const STORAGE_KEYS = {
   onboarding: 'lemonbite.onboarding',
   onboardingComplete: 'lemonbite.onboardingComplete',
   profile: 'lemonbite.profile',
+  categoryPreferences: 'lemonbite.categoryPreferences',
 } as const;
